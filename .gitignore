@@ -2,3 +2,5 @@
 .env
 package-lock.json
 yarn.lock
+/database/*.sqlite
+./src/db.commands.ts
