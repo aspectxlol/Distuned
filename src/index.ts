@@ -1,7 +1,6 @@
 import Bot from './structures/Bot';
 import {
 	CommandInteraction,
-	MessageCreate,
 	Ready,
 } from './events';
 import { GatewayIntentBits, Partials } from 'discord.js';
@@ -22,8 +21,7 @@ const client = new Bot({
 	],
 });
 
-client.on('ready', () => { new Ready(client).execute(); });
+client.once('ready', () => { new Ready(client).execute(); });
 client.on('interactionCreate', (interaction) => { new CommandInteraction(client).execute(interaction); });
-client.on('messageCreate', (message) => { new MessageCreate(client).execute(message); });
 
 client.login(process.env.TOKEN);

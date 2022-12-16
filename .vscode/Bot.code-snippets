@@ -3,6 +3,10 @@
 		"scope": "typescript",
 		"prefix": "cmd",
 		"body": [
+			"import { SlashCommandBuilder, CommandInteraction, CacheType } from \"discord.js\"",
+			"import Bot from \"../../structures/Bot\"",
+			"import BotCommand from \"../../structures/BotCommand\"",
+			"",
 			"class $1 extends BotCommand {",
 			"\tconstructor() {",
 			"\t\tsuper(",
