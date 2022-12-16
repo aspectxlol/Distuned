@@ -1,36 +1,20 @@
-import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs'
 
-/**
- * credit where credit goes
- * Credit to: Conaticus
- * on: https://github.com/conaticus/boolean
- */
+export const getAllFiles = (path: fs.PathLike, type: string) => {
+    const rawFiles = fs.readdirSync(path)
+    let files: string[] = []
+    for (const file of rawFiles){
+        if (['.ts', '.js'].some((ex) => file.endsWith(ex))){
+            files.push(`${__dirname}/../${type}/${file}`)
+        }else{
+            const folder = fs.readdirSync(`${path}/${file}`).filter(file => ['.ts', '.js'].some((ex) => file.endsWith(ex)))
+            for (const file2 of folder){
+                files.push(`${__dirname}/../${type}/${file}/${file2}`)
+            }
+        }
+    }
+    return files
+}
 
-const walk = (
-	pathLike: fs.PathLike,
-	options?:
-		| {
-				encoding: BufferEncoding | null;
-		  }
-		| BufferEncoding
-		| null
-		| undefined
-): string[] => {
-	let results: string[] = [];
-	const fileList = fs.readdirSync(pathLike, options);
-	for (const file of fileList) {
-		const stat = fs.statSync(path.join(pathLike.toString(), file));
-		results = [
-			...results,
-			...(stat && stat.isDirectory()
-				? walk(path.join(pathLike.toString(), file))
-				: [file]),
-		];
-	}
-	return results.map((filename) => path.join(pathLike.toString(), filename));
-};
+export const commandFiles = getAllFiles('src/commands', 'commands')
 
-export const commandFiles = walk(
-	path.join(__dirname, '../commands')
-).filter((file) => ['.ts', '.js'].some((ext) => file.endsWith(ext)));
